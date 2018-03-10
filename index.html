@@ -11,7 +11,7 @@
         }
 
         .fixed {
-            width: 200px;
+            width: 300px;
             height: 200px;
         }
 
@@ -26,20 +26,62 @@
     <header>
         <div class="container">
             <div class="fixed">
-                <button onclick="pause= false; simul();">Start</button>
+                <button onclick="if(pause){pause= false; initMapper(); simul();}">Start</button>
                 <button onclick="pause= true">Pause</button>
                 <button onclick="pause= true;setTimeout(reset,1000)">Reset</button>
-                <br>
+                <br>Wprowadź parametr
                 <form>
-                    <input type="radio" name="ster" value="" checked>A
-                    <br>
-                    <input type="radio" name="ster" value="">B
-                    <br>
-                    <input type="radio" name="ster" value="">C
-                    <br>
-                    <input type="radio" name="ster" value="">D
-                    <br>
+                    <div id="ster">
+                        <input type="radio" name="sameradio" value="liczba" checked>Liczbowo
+                        <input type="number" id="lelem" min=0 max=255 value=128>
+                        <br>
+                        <input type="radio" name="sameradio" value="elem">Elementarny
+                        <br>
+                        <input type="radio" id="clegal" name="sameradio" value="legal" onclick="clicker(id)">Legalny
+                        <br>
+                        <input type="radio" id="cglos" name="sameradio" value="glos" onclick="clicker(id)">Głosujący
+                        <br>
+                    </div>
                 </form>
+                <br>
+                <table>
+                    <tr>
+                        <td>111</td>
+                        <td>110</td>
+                        <td>101</td>
+                        <td>100</td>
+                        <td>011</td>
+                        <td>010</td>
+                        <td>001</td>
+                        <td>000</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="c111" name="automat" value="111" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c110" name="automat" value="110" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c101" name="automat" value="101" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c100" name="automat" value="100" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c011" name="automat" value="011" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c010" name="automat" value="010" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c001" name="automat" value="001" onclick="clicker(id)">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="c000" name="automat" value="000" onclick="clicker(id)">
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="flex-item">
                 <canvas id="line-chart" width="700" height="200" style="border:1px solid #d3d3d3;"></canvas>

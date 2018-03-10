@@ -26,6 +26,22 @@ function diff(st, rz) {
     return ret;
 }
 
+function initMapper() {
+    var opt = document.querySelector('input[name="sameradio"]:checked').value;
+    var licz = 0;
+    if (opt == "liczba")
+        licz = document.getElementById("lelem").value;
+    else {
+        licz = 10;
+        var aut = document.getElementsByName("automat");
+        var vals = [];
+        aut.forEach((el) => { if (el.checked) vals.push(Math.pow(2, parseInt(el.value, 2))) });
+        licz = vals.reduce((a, b) => a + b, 0);
+    }
+    // console.log(licz);
+    mapper = getMapper(licz);
+}
+
 function getMapper(num) {
     var mm = [[[], []], [[], []]];
     var it = 1;
@@ -66,29 +82,29 @@ function drawCanvas(id, arr) {
     ctx.stroke();
 }
 
-function initChart(){
+function initChart() {
     chart = new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-          labels: [],
-          datasets: [{ 
-              data: [],
-              label: "Africa",
-              borderColor: "#3e95cd",
-              fill: false
+            labels: [],
+            datasets: [{
+                data: [],
+                label: "Africa",
+                borderColor: "#3e95cd",
+                fill: false
             }
-          ]
+            ]
         },
         options: {
-          title: {
-            display: true,
-            text: 'Odległość Hamminga'
-          },
-          legend:{
-              display: false
-          }
+            title: {
+                display: true,
+                text: 'Odległość Hamminga'
+            },
+            legend: {
+                display: false
+            }
         }
-      });
+    });
 }
 
 function next(arr) {
@@ -114,7 +130,7 @@ function next(arr) {
 
 function reset() {
     initChart();
-    pause = false;
+    pause = true;
     stand = [[]];
     zaburz = [[]];
     wykres = 0;
@@ -144,13 +160,29 @@ function simul() {
 }
 
 reset();
-// console.log(stand);
-// console.log(zaburz);
-// console.log(roznica);
-// console.log(getMapper(10));
-mapper = getMapper(154);
-// simul();
-// console.log(stand);
-// console.log(mapper);
-// drawCanvas("std", stand);
-// console.log(stand);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function clicker(id) {
+    var aut = document.getElementsByName("automat");
+    var vals = [];
+    aut.forEach((el) => { if (el.checked) vals.push(el.value) });
+    switch (document.querySelector('input[name="sameradio"]:checked').value) {
+        case "legal":
+            document.getElementById("c000").checked = true;
+            var leg = [["c110", "c011"], ["c100", "c001"]];
+            var v = document.getElementById(id).checked;
+            leg.forEach(elem => {
+                if (elem.includes(id))
+                    elem.forEach(el => document.getElementById(el).checked = v)
+            });
+            break;
+        case "glos":
+            var leg = [["c110", "c101", "c011"], ["c100", "c010", "c001"]];
+            var v = document.getElementById(id).checked;
+            leg.forEach(elem => {
+                if (elem.includes(id))
+                    elem.forEach(el => document.getElementById(el).checked = v)
+            });
+            break;
+    }
+}
