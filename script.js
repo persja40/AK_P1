@@ -5,6 +5,8 @@ var hist = 80;
 var stand;
 var zaburz;
 var roznica;
+var wykres;
+var chart;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,6 +17,12 @@ function diff(st, rz) {
         for (var j = 0; j < elems; j++)
             ret[i][j] = (st[i][j] != rz[i][j]);
     }
+    wykres++;
+    chart.data.labels.push(wykres);
+    chart.data.datasets.forEach(element => {
+        element.data.push(ret[0].reduce((a, b) => a + b, 0));
+    });
+    chart.update();
     return ret;
 }
 
@@ -35,6 +43,7 @@ function getMapper(num) {
 function drawCanvas(id, arr) {
     var c = document.getElementById(id);
     var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height);
     for (var i = 0; i < arr.length; i++)
         for (var j = 0; j < elems; j++) {
             if (arr[i][j] == true)
@@ -43,10 +52,11 @@ function drawCanvas(id, arr) {
                 ctx.fillStyle = "white";
             var x = j * (c.width / elems);
             var y = i * (c.height / hist);
+            ctx.beginPath();
             ctx.fillRect(x, y, x + 10, y + 10);
             ctx.strokeRect(x, y, x + 10, y + 10);
             ctx.stroke();
-            console.log(x + " " + y + " ; " + (x + 10) + " " + (y + 10));
+            //console.log(x + " " + y + " ; " + (x + 10) + " " + (y + 10));
         }
     ctx.fillStyle = "white";
     var y = arr.length * (c.height / hist);
@@ -54,6 +64,31 @@ function drawCanvas(id, arr) {
     ctx.moveTo(0, y);
     ctx.lineTo(c.width, y);
     ctx.stroke();
+}
+
+function initChart(){
+    chart = new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{ 
+              data: [],
+              label: "Africa",
+              borderColor: "#3e95cd",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Odległość Hamminga'
+          },
+          legend:{
+              display: false
+          }
+        }
+      });
 }
 
 function next(arr) {
@@ -78,9 +113,11 @@ function next(arr) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function reset() {
+    initChart();
     pause = false;
     stand = [[]];
     zaburz = [[]];
+    wykres = 0;
     for (var i = 0; i < elems; i++)
         stand[0][i] = Math.random() < 0.5 ? false : true;
     for (var i = 0; i < elems; i++) {
@@ -89,15 +126,21 @@ function reset() {
     var r = Math.floor((Math.random() * elems));
     zaburz[0][r] = !zaburz[0][r];
     roznica = diff(stand, zaburz);
-}
-
-function simul(){
-    next(stand);
-    next(zaburz);
-    roznica= diff(stand,zaburz);
     drawCanvas("std", stand);
     drawCanvas("zbr", zaburz);
     drawCanvas("rzn", roznica);
+}
+
+function simul() {
+    if (pause)
+        return;
+    next(stand);
+    next(zaburz);
+    roznica = diff(stand, zaburz);
+    drawCanvas("std", stand);
+    drawCanvas("zbr", zaburz);
+    drawCanvas("rzn", roznica);
+    setTimeout(simul, 500);
 }
 
 reset();
@@ -106,10 +149,8 @@ reset();
 // console.log(roznica);
 // console.log(getMapper(10));
 mapper = getMapper(154);
+// simul();
 // console.log(stand);
 // console.log(mapper);
-for (var i = 0; i < 5; i++) {
-    simul();
-}
 // drawCanvas("std", stand);
 // console.log(stand);

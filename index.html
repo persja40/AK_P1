@@ -5,13 +5,46 @@
     <meta charset="utf-8">
     <meta name="author" content="Ernest Jeczmionek">
     <title>Projekt 1 ESJ</title>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .fixed {
+            width: 200px;
+            height: 200px;
+        }
+
+        .flex-item {
+            width: 700px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 
 <body>
     <header>
-        <button onclick="pause= false">Start</button>
-        <button onclick="pause= !pause">Pause</button>
-        <button>Reset</button>
+        <div class="container">
+            <div class="fixed">
+                <button onclick="pause= false; simul();">Start</button>
+                <button onclick="pause= true">Pause</button>
+                <button onclick="pause= true;setTimeout(reset,1000)">Reset</button>
+                <br>
+                <form>
+                    <input type="radio" name="ster" value="" checked>A
+                    <br>
+                    <input type="radio" name="ster" value="">B
+                    <br>
+                    <input type="radio" name="ster" value="">C
+                    <br>
+                    <input type="radio" name="ster" value="">D
+                    <br>
+                </form>
+            </div>
+            <div class="flex-item">
+                <canvas id="line-chart" width="700" height="200" style="border:1px solid #d3d3d3;"></canvas>
+            </div>
+        </div>
     </header>
     <main>
         <canvas id="std" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
