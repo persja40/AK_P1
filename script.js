@@ -18,31 +18,58 @@ function diff(st, rz) {
     return ret;
 }
 
+function getMapper(num) {
+    var mm = [[[],[]],[[],[]]];
+    var it = 1;
+    for (var k = 0; k <= 1; k++)
+        for (var j = 0; j <= 1; j++)
+            for (var i = 0; i <= 1; i++) {
+                // console.log(k+" "+j+" "+i);
+                // console.log((Math.floor(num/it)%2));
+                mm[i][j][k]= (Math.floor(num/it)%2);
+                it=2*it;
+            }
+    return mm;
+}
+
+function drawCanvas(id, arr){
+    var c=document.getElementById(id);
+    var ctx=c.getContext("2d");
+    for(var i=0; i<arr.length;i++)
+        for(var j=0;j<elems;j++){
+            ctx.beginPath();
+            if(arr[i][j]==true)
+                ctx.fillStyle = "red";
+            else
+                ctx.fillStyle = "white";
+            var x= j*(c.width/elems);
+            var y= i*(c.height/hist);
+            ctx.fillRect(x,y,x+10,y+10);
+            ctx.strokeRect(x,y,x+10,y+10);
+        }
+    
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function reset() {
     pause = false;
     stand = [[]];
     zaburz = [[]];
-    // stand[0] = [];
-    // zaburz[0] = [];
     for (var i = 0; i < elems; i++)
         stand[0][i] = Math.random() < 0.5 ? false : true;
-    console.log(stand);
-    console.log(zaburz);
-    for (var i = 0; i < stand.length; i++) {
-        console.log(i);
-        zaburz[i] = stand[i].slice();
+    for (var i = 0; i < elems; i++) {
+        zaburz[0][i] = stand[0][i];
     }
-    console.log(zaburz);
-    zaburz[Math.floor((Math.random() * elems))] = !zaburz[Math.floor((Math.random() * elems))];
+    var r = Math.floor((Math.random() * elems));
+    zaburz[0][r] = !zaburz[0][r];
     roznica = diff(stand, zaburz);
 }
 
 reset();
-console.log('ALa ma kota');
+// console.log(stand);
+// console.log(zaburz);
+// console.log(roznica);
+// console.log(getMapper(10));
 console.log(stand);
-console.log(zaburz);
-console.log(roznica);
-
-
+drawCanvas("std",stand);
