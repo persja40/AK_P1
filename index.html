@@ -10,15 +10,15 @@
 <body>
     <header>
         <button onclick="pause= false">Start</button>
-        <button onclick="pause= true">Pause</button>
-        <button >Reset</button>
+        <button onclick="pause= !pause">Pause</button>
+        <button>Reset</button>
     </header>
-<main>
-    <canvas id="std" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
-    <canvas id="zbr" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
-    <canvas id="rzn" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
-</main>
-<script type="text/javascript" src="script.js"></script>
+    <main>
+        <canvas id="std" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
+        <canvas id="zbr" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
+        <canvas id="rzn" width="500" height="800" style="border:1px solid #d3d3d3;"></canvas>
+    </main>
+    <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

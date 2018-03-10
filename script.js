@@ -19,35 +19,60 @@ function diff(st, rz) {
 }
 
 function getMapper(num) {
-    var mm = [[[],[]],[[],[]]];
+    var mm = [[[], []], [[], []]];
     var it = 1;
     for (var k = 0; k <= 1; k++)
         for (var j = 0; j <= 1; j++)
             for (var i = 0; i <= 1; i++) {
                 // console.log(k+" "+j+" "+i);
                 // console.log((Math.floor(num/it)%2));
-                mm[i][j][k]= (Math.floor(num/it)%2);
-                it=2*it;
+                mm[i][j][k] = (Math.floor(num / it) % 2);
+                it = 2 * it;
             }
     return mm;
 }
 
-function drawCanvas(id, arr){
-    var c=document.getElementById(id);
-    var ctx=c.getContext("2d");
-    for(var i=0; i<arr.length;i++)
-        for(var j=0;j<elems;j++){
-            ctx.beginPath();
-            if(arr[i][j]==true)
+function drawCanvas(id, arr) {
+    var c = document.getElementById(id);
+    var ctx = c.getContext("2d");
+    for (var i = 0; i < arr.length; i++)
+        for (var j = 0; j < elems; j++) {
+            if (arr[i][j] == true)
                 ctx.fillStyle = "red";
             else
                 ctx.fillStyle = "white";
-            var x= j*(c.width/elems);
-            var y= i*(c.height/hist);
-            ctx.fillRect(x,y,x+10,y+10);
-            ctx.strokeRect(x,y,x+10,y+10);
+            var x = j * (c.width / elems);
+            var y = i * (c.height / hist);
+            ctx.fillRect(x, y, x + 10, y + 10);
+            ctx.strokeRect(x, y, x + 10, y + 10);
+            ctx.stroke();
+            console.log(x + " " + y + " ; " + (x + 10) + " " + (y + 10));
         }
-    
+    ctx.fillStyle = "white";
+    var y = arr.length * (c.height / hist);
+    ctx.fillRect(0, y, c.width, c.height);
+    ctx.moveTo(0, y);
+    ctx.lineTo(c.width, y);
+    ctx.stroke();
+}
+
+function next(arr) {
+    var step = [];
+    for (var i = 0; i < elems; i++)
+        switch (i) {
+            case 0:
+                step[i] = mapper[Number(arr[0][i + 1])][Number(arr[0][i])][Number(arr[0][elems - 1])];
+                break;
+            case elems - 1:
+                step[i] = mapper[Number(arr[0][0])][Number(arr[0][i])][Number(arr[0][i - 1])];
+                break;
+            default:
+                step[i] = mapper[Number(arr[0][i + 1])][Number(arr[0][i])][Number(arr[0][i - 1])];
+                break;
+        }
+    arr.unshift(step);
+    if (arr.length > hist)
+        arr.pop();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,10 +91,25 @@ function reset() {
     roznica = diff(stand, zaburz);
 }
 
+function simul(){
+    next(stand);
+    next(zaburz);
+    roznica= diff(stand,zaburz);
+    drawCanvas("std", stand);
+    drawCanvas("zbr", zaburz);
+    drawCanvas("rzn", roznica);
+}
+
 reset();
 // console.log(stand);
 // console.log(zaburz);
 // console.log(roznica);
 // console.log(getMapper(10));
-console.log(stand);
-drawCanvas("std",stand);
+mapper = getMapper(154);
+// console.log(stand);
+// console.log(mapper);
+for (var i = 0; i < 5; i++) {
+    simul();
+}
+// drawCanvas("std", stand);
+// console.log(stand);
