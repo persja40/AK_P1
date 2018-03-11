@@ -38,7 +38,7 @@ function initMapper() {
         aut.forEach((el) => { if (el.checked) vals.push(Math.pow(2, parseInt(el.value, 2))) });
         licz = vals.reduce((a, b) => a + b, 0);
     }
-    // console.log(licz);
+    console.log(licz);
     mapper = getMapper(licz);
 }
 
