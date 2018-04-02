@@ -168,7 +168,7 @@ function clicker(id) {
     aut.forEach((el) => { if (el.checked) vals.push(el.value) });
     switch (document.querySelector('input[name="sameradio"]:checked').value) {
         case "legal":
-            document.getElementById("c000").checked = true;
+            document.getElementById("c000").checked = false;
             var leg = [["c110", "c011"], ["c100", "c001"]];
             var v = document.getElementById(id).checked;
             leg.forEach(elem => {
